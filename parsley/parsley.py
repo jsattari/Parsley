@@ -1,10 +1,8 @@
-import re
-import json
+#!/usr/bin/env python3
+
 import pandas as pd
 import click
-import os
-
-
+from .seasoning import * # pylint: disable=unused-wildcard-import
 
 @click.group()
 def cli():
@@ -13,9 +11,10 @@ def cli():
 
 
 @cli.command()
-@click.option('--filename', default=str, help='Absolute filepath of file intended for parsing')
+@click.option('--filename', help='Absolute filepath of file intended for parsing')
 @click.argument('filename', type=click.Path(exists=True))
 def columns(filename):
+  '''Returns column headers of excel sheet'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename)
     print('Columns: ' + str(df.columns.values))
@@ -23,18 +22,20 @@ def columns(filename):
     df = pd.read_excel(filename)
     print('Columns: ' + str(df.columns.values))
 
+
 @cli.command()
-@click.option('--filename', default=str, help='Save a copy of file for editing')
+@click.option('--filename', help='Absolute filepath of file intended for copying')
 @click.argument('filename', type=click.Path(exists=True))
 def copy(filename):
+  '''Takes a file and copies it to Desktop'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename)
-    df.to_csv('~/Desktop/revised_' + filename, index=False)
-    print('File saved at revised_' + filename)
+    df.to_csv('~/Desktop/revised_file.csv', index=False)
+    print('File saved at ~/Desktop/revised_file.csv')
   if filename.endswith('.xlsx'):
     df = pd.read_excel(filename)
-    df.to_excel('~/Desktop/revised_' + filename, index=False)
-    print('File saved at revised_' + filename)
+    df.to_excel('~/Desktop/revised_file.xlsx', index=False)
+    print('File saved at ~/Desktop/revised_file.xlsx')
 
 
 if __name__ == '__main__':
