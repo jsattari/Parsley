@@ -1,9 +1,11 @@
 import re
 
 
-def regex_parse(col, string):
-        regex = f"r'({col}|\"{col}\"):(\d+\.\d*|\d+|\w+|\"\d+\"|\"\w+\")" # pylint: disable=anomalous-backslash-in-string
-        found = re.findall(regex, string)
-        regex2 = r'[^,\[\]](\w+[^,]):'
-        removed = re.sub(regex2, '', found)
-        return removed
+def regex_parse(value, string):
+    '''Look for pattern of "key":value or
+    "key":"value" and return the value'''
+
+    regex = re.compile(
+        r'\"' + value + '\":(\d+|\d+|\"\w+\")')  # pylint: disable=anomalous-backslash-in-string
+    found = regex.findall(string)
+    return found
