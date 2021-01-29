@@ -14,7 +14,7 @@ def cli():
 @cli.command()
 @click.option('--filename', help='Absolute filepath of file intended for manipulation')
 @click.argument('filename', type=click.Path(exists=True))
-def get_columns(filename):
+def getcolumns(filename):
   '''Returns column headers of excel sheet'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename)
@@ -22,8 +22,6 @@ def get_columns(filename):
   if filename.endswith('.xlsx'):
     df = pd.read_excel(filename)
     print('Columns: ' + str(df.columns.values))
-  else:
-    print('File type is not acceptable, please use xlsx or csv')
 
 
 @cli.command()
@@ -39,8 +37,6 @@ def copy(filename):
     df = pd.read_excel(filename)
     df.to_csv('~/Desktop/revised_file.csv', index=False)
     print('File saved at ~/Desktop/revised_file.csv')
-  else:
-    print('File type is not acceptable, please use xlsx or csv')
 
 
 @cli.command()
@@ -48,7 +44,7 @@ def copy(filename):
 @click.option('--column', help='Column that contains JSON array')
 @click.option('--keys', help='Values to parse from JSON array')
 @click.argument('filename', type=click.Path(exists=True))
-@click.argument('column')
+@click.argument('column', required=True)
 @click.argument('keys', nargs=-1, required=True)
 def parse(filename, column, keys):
   '''Parse values from a column that
@@ -58,6 +54,7 @@ def parse(filename, column, keys):
     for key in keys:
       df[f'list_of_{key}'] = df[column].apply(lambda x: regex_parse(key, x))
     df.to_csv('~/Desktop/revised_file.csv', index=False)
+    print(df.head())
     print('File saved at ~/Desktop/revised_file.csv')
   if filename.endswith('.xlsx'):
     df = pd.read_excel(filename)
@@ -65,8 +62,46 @@ def parse(filename, column, keys):
       df[f'list_of_{key}'] = df[column].apply(lambda x: regex_parse(key, x))
     df.to_csv('~/Desktop/revised_file.csv', index=False)
     print('File saved at ~/Desktop/revised_file.csv')
-  else:
-    print('File type is not acceptable, please use xlsx or csv')
+
+
+@cli.command()
+@click.option('--filename', help='Absolute filepath of file intended for manipulation')
+@click.option('--column', help='Column to be summed')
+@click.argument('filename', type=click.Path(exists=True))
+@click.argument('column')
+def add(filename, column):
+  '''Add up contents of each row within
+  the selected column'''
+  if filename.endswith('.csv'):
+    df = pd.read_csv(filename)
+    df[f'add_{column}'] = df[column].apply(lambda x: addup(x))
+    df.to_csv('~/Desktop/revised_file.csv', index=False)
+    print('file saved at ~/Desktop/revised_file.csv')
+  if filename.endswith('.xlsx'):
+    df = pd.read_excel(filename)
+    df[f'add_{column}'] = df[column].apply(lambda x: addup(x))
+    df.to_excel('~/Desktop/revised_file.xlsx', index=False)
+    print('file saved at ~/Desktop/revised_file.xlsx')
+
+
+@cli.command()
+@click.option('--filename', help='Absolute filepath of file intended for manipulation')
+@click.option('--column', help='Column to be averaged')
+@click.argument('filename', type=click.Path(exists=True))
+@click.argument('column')
+def avg(filename, column):
+  '''Find mean of the values in each row
+  within a given column'''
+  if filename.endswith('.csv'):
+    df = pd.read_csv(filename)
+    df[f'avg_{column}'] = df[column].apply(lambda x: avgup(x))
+    df.to_csv('~/Desktop/revised_file.csv', index=False)
+    print('file saved at ~/Desktop/revised_file.csv')
+  if filename.endswith('.xlsx'):
+    df = pd.read_excel(filename)
+    df[f'avg_{column}'] = df[column].apply(lambda x: avgup(x))
+    df.to_excel('~/Desktop/revised_file.xlsx', index=False)
+    print('file saved at ~/Desktop/revised_file.xlsx')
 
 
 if __name__ == '__main__':
