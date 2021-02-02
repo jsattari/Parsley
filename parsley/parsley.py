@@ -2,6 +2,7 @@
 
 import pandas as pd
 import click
+import json
 from .seasoning import *  # pylint: disable=unused-wildcard-import
 
 
@@ -129,6 +130,21 @@ def drop(filename, columns):
       df = df.drop(f'{i}', axis=1)
     df.to_excel('~/Desktop/revised_file.xlsx', index=False)
     print('file saved at ~/Desktop/revised_file.xlsx')
+
+
+@cli.command()
+@click.option('--filename', help='Absolute filepath of file intended for manipulation')
+@click.option('--count_rows', help='Count of rows to preview')
+@click.argument('filename', type=click.Path(exists=True))
+@click.argument('count_rows', required=True)
+def preview(filename, count_rows):
+  '''Show a snapshot of dataframe'''
+  if filename.endswith('.csv'):
+    df = pd.read_csv(filename, quoting=3).convert_dtypes()
+    print(df.head(int(count_rows)))
+  if filename.endswith('.xlsx'):
+    df = pd.read_excel(filename).convert_dtypes()
+    print(df.head(int(count_rows)))
 
 
 if __name__ == '__main__':
