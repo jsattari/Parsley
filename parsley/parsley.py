@@ -145,6 +145,26 @@ def preview(filename):
     df = pd.read_excel(filename).replace("'", '', regex=True)
     print(df.head())
 
+@cli.command()
+@click.option('--filename', help='Absolute filepath of file intended for manipulation')
+@click.option('--columns', help='Column(s) to drop')
+@click.argument('filename', type=click.Path(exists=True))
+@click.argument('columns', nargs=-1, required=True)
+def getmax(filename, columns):
+  '''Get the max of the values in a column'''
+  if filename.endswith('.csv'):
+    df = pd.read_csv(filename, error_bad_lines=False).replace("'", '', regex=True)
+    for col in columns:
+      df[f'max_{col}'] = df[f'{col}'].apply(lambda x: max_val(x))
+    df.to_csv('~/Desktop/revised_file.csv', index=False)
+    print('file saved at ~/Desktop/revised_file.csv')
+  if filename.endswith('.xlsx'):
+    df = pd.read_excel(filename).replace("'", '', regex=True)
+    for col in columns:
+      df[f'max_{col}'] = df[f'{col}'].apply(lambda x: max_val(x))
+    df.to_excel('~/Desktop/revised_file.xlsx', index=False)
+    print('file saved at ~/Desktop/revised_file.xlsx')
+
 
 if __name__ == '__main__':
   cli()
