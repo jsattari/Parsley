@@ -1,5 +1,5 @@
 import re
-
+import statistics as stats
 
 def regex_parse(value, string):
     '''Look for pattern of "key":value or
@@ -48,3 +48,10 @@ def min_val(value):
     bad_list = '[\[|\]|\s]' # pylint: disable=anomalous-backslash-in-string
     new_val = re.sub(bad_list, '', value).split(',')
     return min(new_val)
+
+
+def med_val(value):
+    '''Get min value from list'''
+    bad_list = '[\[|\]|\s]' # pylint: disable=anomalous-backslash-in-string
+    new_val = re.sub(bad_list, '', value).split(',')
+    return stats.median(new_val)
