@@ -8,7 +8,6 @@ def regex_parse(value, string):
     regex = re.compile(
         r'\"' + value + '\":(\d+|\d+|\"\w+\")')  # pylint: disable=anomalous-backslash-in-string
     found = regex.findall(string)
-    # regex2 = r'[\"\']'
     return found
 
 
@@ -19,7 +18,7 @@ def addup(value):
     newnewlist = newlist.split(',')
     total = 0
     for i in range(0, len(newnewlist)):
-        num = int(newnewlist[i])
+        num = float(newnewlist[i])
         total = total + num
     return total
 
@@ -31,7 +30,7 @@ def avgup(value):
     newnewlist = newlist.split(',')
     total = 0
     for i in range(0, len(newnewlist)):
-        num = int(newnewlist[i])
+        num = float(newnewlist[i])
         total = total + num
     return total / len(newnewlist)
 
@@ -55,5 +54,5 @@ def med_val(value):
     newlist = value.replace('[', '').replace(
         ']', '').replace("'", '').replace(' ', '')
     newnewlist = newlist.split(',')
-    newnewlist = [int(s) for s in newnewlist]
+    newnewlist = [float(s) for s in newnewlist]
     return median(newnewlist)

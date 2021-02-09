@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='Parsley',
-    version='1.0',
+    version='1.0.0',
     author='John Sattari',
     author_email='jsattari3@gmail.com',
     packages=['parsley'],

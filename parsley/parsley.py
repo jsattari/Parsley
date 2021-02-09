@@ -10,14 +10,13 @@ from .seasoning import *  # pylint: disable=unused-wildcard-import
 @click.group()
 def cli():
   pass
-  # print("This method has these arguments: " + str(filename))
 
 # command for viewing cols (returns list)
 @cli.command()
 @click.option('--filename', help='Absolute filepath of file intended for manipulation')
 @click.argument('filename', type=click.Path(exists=True))
 def getcolumns(filename):
-  '''Returns column headers of excel sheet'''
+  '''Returns headers of xlsx or csv'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename)
     print('Columns: ' + str(df.columns.values))
@@ -97,7 +96,7 @@ def add(filename, column):
 @click.argument('filename', type=click.Path(exists=True))
 @click.argument('column')
 def avg(filename, column):
-  '''Find mean of the values in each row
+  '''Find the mean of the values in each row
   within a given column'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename)
@@ -137,7 +136,7 @@ def drop(filename, columns):
 @click.option('--filename', help='Absolute filepath of file intended for manipulation')
 @click.argument('filename', type=click.Path(exists=True))
 def preview(filename):
-  '''Show a snapshot of dataframe'''
+  '''Show a snapshot of data'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename, error_bad_lines=False).replace("'", '', regex=True)
     print(df.head())
@@ -151,7 +150,7 @@ def preview(filename):
 @click.argument('filename', type=click.Path(exists=True))
 @click.argument('columns', nargs=-1, required=True)
 def getmax(filename, columns):
-  '''Get the max of the values in a column'''
+  '''Get the max of the values in each row'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename, error_bad_lines=False).replace("'", '', regex=True)
     for col in columns:
@@ -171,7 +170,7 @@ def getmax(filename, columns):
 @click.argument('filename', type=click.Path(exists=True))
 @click.argument('columns', nargs=-1, required=True)
 def getmin(filename, columns):
-  '''Get the min of the values in a column'''
+  '''Get the min of the values in each row'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename, error_bad_lines=False).replace("'", '', regex=True)
     for col in columns:
@@ -190,8 +189,8 @@ def getmin(filename, columns):
 @click.option('--columns', help='Column(s) to compute median values')
 @click.argument('filename', type=click.Path(exists=True))
 @click.argument('columns', nargs=-1, required=True)
-def median(filename, columns):
-  '''Get the min of the values in a column'''
+def med(filename, columns):
+  '''Get the median of the values in each row'''
   if filename.endswith('.csv'):
     df = pd.read_csv(filename, error_bad_lines=False).replace("'", '', regex=True)
     for col in columns:
