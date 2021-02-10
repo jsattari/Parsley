@@ -1,11 +1,19 @@
-# Parsley ![document](https://systemuicons.com/images/icons/document.svg)
+# Parsley
 Command line CLI to help you parse JSON within excel or csv files
 
 ## Install
 
-```git clone https://github.com/jsattari/Parsley.git```
+```
+$ git clone https://github.com/jsattari/Parsley.git
+```
+## Usage
+
+```
+$ parsley parse <filepath> jsoncol key key key
+```
 
 ## Commands
+
 ```
 Usage: parsley [OPTIONS] COMMAND [ARGS]...
 
