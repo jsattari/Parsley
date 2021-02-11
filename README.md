@@ -8,8 +8,13 @@ $ git clone https://github.com/jsattari/Parsley.git
 ```
 ## Usage
 
+Start by parsing out the JSON blob...
 ```
-$ parsley parse <filepath> jsoncol key key key
+$ parsley parse <filepath> jsoncol <values to parse out>
+```
+Then apply different functions to the parsed columns.
+```
+$ parsley add <filepath> <column where funciton will be applied>
 ```
 
 ## Commands
